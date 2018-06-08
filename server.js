@@ -18,7 +18,6 @@ app.use(function(req, res, next) {
 });
 
 app.use('/api', router); // routes will be /api/whatever
-//app.use('/', router);
 
 var version = {
   id: '1.0.2',
