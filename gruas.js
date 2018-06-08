@@ -23,27 +23,27 @@ var estadoGrua = [{
 
 var gruas = [{
     id: 01,
-    estado: 00,
+    estado_id: 00,
     ubicacion: depositos[0].ubicacion
   }, {
     id: 02,
-    estado: 00,
+    estado_id: 00,
     ubicacion: depositos[1].ubicacion
   }, {
     id: 03,
-    estado: 01,
+    estado_id: 01,
     ubicacion: depositos[0].ubicacion
   }, {
     id: 04,
-    estado: 01,
+    estado_id: 01,
     ubicacion: depositos[1].ubicacion
   }, {
     id: 05,
-    estado: 01,
+    estado_id: 01,
     ubicacion: depositos[1].ubicacion
   }, {
     id: 06,
-    estado: 02,
+    estado_id: 02,
     ubicacion: depositos[1].ubicacion
   }]
 
@@ -58,7 +58,7 @@ exports.get = function(id) {
   if(grua) {
     res = {
       id: grua.id,
-      estado: grua.estado,
+      estado_id: grua.estado_id,
       ubicacion: grua.ubicacion
     };
   }
