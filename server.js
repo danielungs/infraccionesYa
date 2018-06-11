@@ -6,6 +6,7 @@ var infracciones = require("./infracciones.js");
 var types = require("./types.js");
 var acarreos = require("./acarreos.js");
 var gruas = require("./gruas.js");
+var posiciones = require("./posiciones.js");
 
 var app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -20,7 +21,7 @@ app.use(function(req, res, next) {
 app.use('/api', router); // routes will be /api/whatever
 
 var version = {
-  id: '1.0.2',
+  id: '1.1.0',
   name: 'shootingstar',
   lastupdate: Date.now()
 }
@@ -32,6 +33,7 @@ var urlAcarreo = '/:patente/acarreos/';
 var urlDepositos = '/depositos/';
 var urlGruas = '/gruas/';
 var urlEstados = '/estadosGruas/';
+var urlPosiciones = urlGruas + ':grua_id/posiciones';
 
 var addAPIBaseRoute = function(route) {
   return '/api' + route;
@@ -71,7 +73,7 @@ getHelp[addAPIBaseRoute(urlGruas + ':grua_id')] = {
   "descripción": "Obtiene la grúa con id :grua_id",
   "ejemplo": "/api/gruas/1"};
 
-getHelp[addAPIBaseRoute(urlGruas + ':grua_id/posiciones')] = {
+getHelp[addAPIBaseRoute(urlPosiciones)] = {
   "descripción": "Obtiene las posiciones de la grúa con id :grua_id",
   "ejemplo": "/api/gruas/1/posiciones"};
 
@@ -87,7 +89,8 @@ var help = {
   welcome: 'Bienvenidos a Infracciones Ya!',
   urls: {
       'GET': getHelp
-  }
+  },
+  version: version
 }
 
 router.get('/', function(req, res) {
@@ -157,7 +160,12 @@ router.route(urlType)
     .get(function(req, res) {
         console.log("GET: " + urlType);
 
-        res.json(types.list());
+        var response = {
+            tipos: types.list(),
+            version: version
+        }
+        res.json(response);
+ 
     });
 
 router.route(urlType + ':type_id')
@@ -171,7 +179,13 @@ router.route(urlType + ':type_id')
         console.log(type);
 
         if (type) {
-            res.json(type);
+		
+			var response = {
+				tipo: type,
+				version: version
+			}
+			res.json(response);
+
         } else {
             // http://stackoverflow.com/questions/8393275/how-to-programmatically-send-a-404-response-with-express-node
             res.status(404)
@@ -229,7 +243,11 @@ router.route(urlDepositos)
     .get(function(req, res) {
         console.log("GET: " + urlDepositos);
 
-        res.json(acarreos.list());
+        var response = {
+            depositos: acarreos.list(),
+            version: version
+        }
+        res.json(response);
     });
 
 // Gruas
@@ -237,7 +255,11 @@ router.route(urlGruas)
     .get(function(req, res) {
         console.log("GET: " + urlGruas);
 
-        res.json(gruas.list());
+        var response = {
+            gruas: gruas.list(),
+            version: version
+        }
+        res.json(response);		
     });
 
 router.route(urlGruas + ':grua_id')
@@ -264,6 +286,40 @@ router.route(urlGruas + ':grua_id')
         res.json(response);
     });
 
+//Posiciones
+router.route(urlPosiciones)
+    .get(function(req, res) {
+        console.log("GET: " + urlPosiciones);
+
+        var id = req.params.grua_id;
+        console.log(id);
+
+        var grua = gruas.get(id);
+
+        if (!grua) {
+            res.status(404)
+               .send('Grúa inexistente.');
+            return;
+        }
+
+        var lista = posiciones.get(id);
+
+        if (!lista) {
+            res.status(404)
+               .send('posiciones inexistentes.');
+
+            return;
+        }
+		
+        var response = {
+            grua: id,
+            posiciones: lista,
+            version: version
+        }
+        res.json(response);
+    });
+
+//
 router.route(urlEstados)
     .get(function(req, res) {
         console.log("GET: " + urlEstados);

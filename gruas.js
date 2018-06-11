@@ -21,30 +21,32 @@ var estadoGrua = [{
     descripcion: "No operativa."
   }]
 
+  //-34.5460985, -58.7104065
+  //-34.541765, -58.7160749
 var gruas = [{
     id: 01,
     estado_id: 00,
-    ubicacion: depositos[0].ubicacion
+    ubicacion: new Coordinate(-34.5460985, -58.7104065)
   }, {
     id: 02,
     estado_id: 00,
-    ubicacion: depositos[1].ubicacion
+    ubicacion: new Coordinate(-34.5208342, -58.7173721)
   }, {
     id: 03,
     estado_id: 01,
-    ubicacion: depositos[0].ubicacion
+    ubicacion: new Coordinate(-34.5460985, -58.7104065)
   }, {
-    id: 04,
-    estado_id: 01,
-    ubicacion: depositos[1].ubicacion
+    id: 04,	
+    estado_id: 02,
+    ubicacion: new Coordinate(-34.543322, -58.712427)
   }, {
     id: 05,
-    estado_id: 01,
-    ubicacion: depositos[1].ubicacion
+    estado_id: 00,
+    ubicacion: new Coordinate(-34.5460985, -58.7104065)
   }, {
     id: 06,
     estado_id: 02,
-    ubicacion: depositos[1].ubicacion
+    ubicacion: new Coordinate(-34.541765, -58.7160749)
   }]
 
 exports.list = function() {
